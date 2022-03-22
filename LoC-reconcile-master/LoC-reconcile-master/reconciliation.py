@@ -6,7 +6,6 @@ from lxml import etree
 from bs4 import BeautifulSoup as bSoup
 import logging
 
-
 class Recon:
 
     def __init__(self, score):
