@@ -81,7 +81,7 @@ def jsonpify(obj):
     except KeyError:
         return jsonify(obj)
 
-
+# column data is sent from openrefine to this function, serialized
 @app.route("/reconcile/LoC", methods=['POST', 'GET'])
 def reconcile():
     queries = request.form.get('queries')
