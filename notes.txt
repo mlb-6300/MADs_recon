@@ -1,0 +1,12 @@
+Status 
+- As of 3/24/2022, currently able to parse the etd-naf xml document and store the names and URIs of all committee 
+members in a dictionary. Currently working on setting up the actual recon service with OpenRefine. Using a lot
+from the LoCreconcile repository, main thing that will differ is the search functionality. Will be
+searching the dictionary returned by an object from MADsParser. Names are values in the dict, will scan 
+over all the values, possible duplicate URIs will be returned, but that will be handled by the user. i.e. 
+they will choose the best match. 
+
+Possible Changes / Potential Improvements
+- Was considering storing all the names & URIs in an sqlite3 database, but would impede on search time.
+Takes much longer I believe to query a database table than to simply scan over a dictionary. 
+O(1) time complexity for lookups. No collisions with URI as the key. 
