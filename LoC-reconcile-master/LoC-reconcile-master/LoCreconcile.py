@@ -62,6 +62,7 @@ def search(search_in, query_type='', limit=3):
         if recon_result.score == "1.0":
             match = True  # auto-match for perfect results
 
+        # since we are not scoring, just need the uri. don't need a dict at all? scores just a list of uris?
         scores.append({
             "id": str(recon_result.uri),
             "name": recon_result.header,
@@ -96,6 +97,8 @@ def reconcile():
             limit = 3
             if 'limit' in query:
                 limit = int(query['limit'])
+            # data is equal to a list of dictionaries
+            # results 
             data = search(query['query'], query_type=qtype, limit=limit)
             results[key] = {"result": data}
         return jsonpify(results)

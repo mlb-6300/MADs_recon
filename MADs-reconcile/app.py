@@ -38,15 +38,11 @@ def jsonpify(obj):
     except KeyError:
         return jsonify(obj)
 
-# maybe move this over to mads_parse
-def search(search_in, query_type='', limit=3):
-    # this will search the dictionary
-    # import parse as a module, have a function from there return a dict
-    return
-
 # this route is what is called when adding a recon service in openrefine
+# in custom search function, we return a list of all the uris
 @app.route("/reconcile/mads", methods=["POST", "GET"])
 def reconcile():
+    parse = MADsParser()
     queries = request.form.get('queries')
     # if content in queries (i.e. names), deserialize the content
     if queries: 
@@ -61,13 +57,19 @@ def reconcile():
             limit = 3
             if 'limit' in query:
                 limit = int(query['limit'])
-            data = search(query['query'], query_type=qtype, limit=limit)
-            #print(query['query'])
+            data = parse.search(query['query'], query_type=qtype, limit=limit)
+            #print(query['query'],)
             results[key] = {"result": data}
+            print(results[key])
         return jsonpify(results)
     return jsonpify(metadata)
 
 if __name__ == "__main__":
     # defaults to localhost port 5000
     # http://127.0.0.1:5000/reconcile/mads
-    app.run(debug=True)
+    app.run(debug=True, threaded=True)
+
+# !!!
+# do we need a scoring algorithm? if this is exclusively being used for fsu and thesis committee type stuff
+# we probably will never have more than 3 people with the same exact names. 
+# ask alex
