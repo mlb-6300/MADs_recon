@@ -60,7 +60,7 @@ def reconcile():
             data = parse.search(query['query'], query_type=qtype, limit=limit)
             #print(query['query'],)
             results[key] = {"result": data}
-            print(results[key])
+            #print(results[key])
         return jsonpify(results)
     return jsonpify(metadata)
 

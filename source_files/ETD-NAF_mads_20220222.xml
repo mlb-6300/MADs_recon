@@ -16240,13 +16240,13 @@ http://id.loc.gov/authorities/names/n86117542</mads:note>
                     authorityURI="http://id.loc.gov/authorities/names/"
                     valueURI="http://id.loc.gov/authorities/names/n77010467">
             <mads:namePart type="family">Gontarski</mads:namePart>
-            <mads:namePart type="given">S. E.</mads:namePart>
+            <mads:namePart type="given">Stanley E.</mads:namePart>
          </mads:name>
       </mads:authority>
       <mads:variant type="other">
          <mads:name type="personal">
             <mads:namePart type="family">Gontarski</mads:namePart>
-            <mads:namePart type="given">Stanley E.</mads:namePart>
+            <mads:namePart type="given">S. E.</mads:namePart>
          </mads:name>
       </mads:variant>
       <mads:affiliation>
@@ -26015,7 +26015,7 @@ http://id.loc.gov/authorities/names/n2010033722</mads:note>
                     authorityURI="https://authorities.lib.fsu.edu/etd-naf/"
                     valueURI="https://authorities.lib.fsu.edu/etd-naf/klansford">
             <mads:namePart type="family">Lansford</mads:namePart>
-            <mads:namePart type="given">Katlin L.</mads:namePart>
+            <mads:namePart type="given">Kaitlin L.</mads:namePart>
          </mads:name>
       </mads:authority>
       <mads:affiliation>
@@ -48169,13 +48169,13 @@ http://id.loc.gov/authorities/names/n81098986</mads:note>
                     authority="etd-naf"
                     authorityURI="https://authorities.lib.fsu.edu/etd-naf/"
                     valueURI="https://authorities.lib.fsu.edu/etd-naf/iwiedenhoever">
-            <mads:namePart type="family">Weidenhoever</mads:namePart>
+            <mads:namePart type="family">Wiedenhover</mads:namePart>
             <mads:namePart type="given">Ingo Ludwing M.</mads:namePart>
          </mads:name>
       </mads:authority>
       <mads:variant type="other">
          <mads:name type="personal">
-            <mads:namePart type="family">Weidenhöver</mads:namePart>
+            <mads:namePart type="family">Wiedenhöver</mads:namePart>
             <mads:namePart type="given">Ingo</mads:namePart>
          </mads:name>
       </mads:variant>

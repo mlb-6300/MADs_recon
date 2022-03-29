@@ -1,6 +1,7 @@
 from bs4 import BeautifulSoup
 import collections
 import re
+from unidecode import unidecode
 
 class MADsParser: 
     collections.Callable = collections.abc.Callable
@@ -8,6 +9,7 @@ class MADsParser:
     
     # default constructor initializes the iternal dict of uri/name pairs. 
     def __init__(self):
+        counter = 0
 
         # inits BeautifulSoup parse object with the etd-naf_mads source file
         with open("../source_files/ETD-NAF_mads_20220222.xml", "rb") as fp:
@@ -28,7 +30,6 @@ class MADsParser:
             # grabbing the uri
             uri = name.get("valueURI")
 
-            # if the URI for someone does not exist, dont know what to do rn, needs to be unique. make one up? no.
             # if someone does not have a uri, they simply should not be in the dict (imo). when we go to reconcile, no uri will pop up, as it should be
             if (uri == None):
                 continue
@@ -40,6 +41,7 @@ class MADsParser:
             # if empty family field (more so the field doesn't exist), continues in the loop 
             if l is None:
                 continue
+            
 
             lastname = l.get_text()
             firstname = f.get_text()
@@ -48,15 +50,45 @@ class MADsParser:
             firstname = re.sub(r'\([^)]*\)', '', firstname)
             firstname = firstname.rstrip()
 
+            # need to strip hyphenated names, replace with whitespace
+            lastname = lastname.replace("-", " ")
+            lastname = unidecode(lastname)
+            firstname = unidecode(firstname)
+
+            # maybe check to see if a lastname is two words?
+            # if it is, strip the first part and add to first name?
+            # consistency issues with hyphenated last names, need to get all edge cases
+
+            #print(lastname + ", " + firstname)
+            #print(uri)
+
             # adding pair to dict, uri as key and name as value
-            # store name as Last, First
+            # store name as Last, First        
             self.uris_names[uri] = lastname +", " + firstname
 
 
     # given a name from OpenRefine, search the dict for the name in the value, return a list of URIs
     
     def search(self, name, query_type='', limit=3):
-        print("here")
         uris = []
-        uris = [k for k,v in self.uris_names.items() if v == name]
-        return uris
+        for k,v in self.uris_names.items():
+            # try catch, if name is not in v, try stripping the comma, index the first element (lastname), check 
+            # if in v again, if it, multiple matches? 
+            if unidecode(name.replace("-", " ")) in v:
+                uris.append({
+                    "id": k,
+                    "name": name,
+                    "score": 1, 
+                    "match": True
+                })
+                return uris
+
+        out = open("problemNames.txt", "a")
+        name = name + "\n"
+        out.write(unidecode(name))
+        out.close()
+
+        return 
+
+if __name__ == "__main__":
+    parse = MADsParser()
