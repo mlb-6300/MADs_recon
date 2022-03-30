@@ -3924,7 +3924,7 @@ http://id.loc.gov/authorities/names/n88680543</mads:note>
                     authorityURI="http://id.loc.gov/authorities/names/"
                     valueURI="http://id.loc.gov/authorities/names/n2002162741">
             <mads:namePart type="family">Bonesteel</mads:namePart>
-            <mads:namePart type="given">N. E.</mads:namePart>
+            <mads:namePart type="given">Nicholas E.</mads:namePart>
          </mads:name>
       </mads:authority>
       <mads:variant type="other">
@@ -34877,7 +34877,7 @@ http://id.loc.gov/authorities/names/n2006086394</mads:note>
                     authority="naf"
                     authorityURI="http://id.loc.gov/authorities/names/"
                     valueURI="http://id.loc.gov/authorities/names/no2012049769">
-            <mads:namePart type="family">Park</mads:namePart>
+            <mads:namePart type="family">Park-Gaghan</mads:namePart>
             <mads:namePart type="given">Toby J.</mads:namePart>
          </mads:name>
       </mads:authority>

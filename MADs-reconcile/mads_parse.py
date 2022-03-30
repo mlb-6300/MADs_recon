@@ -9,8 +9,6 @@ class MADsParser:
     
     # default constructor initializes the iternal dict of uri/name pairs. 
     def __init__(self):
-        counter = 0
-
         # inits BeautifulSoup parse object with the etd-naf_mads source file
         with open("../source_files/ETD-NAF_mads_20220222.xml", "rb") as fp:
             soup = BeautifulSoup(fp, "xml")
@@ -42,7 +40,7 @@ class MADsParser:
             if l is None:
                 continue
             
-
+            # can boil all this down to one line of code, clean later 
             lastname = l.get_text()
             firstname = f.get_text()
             
@@ -66,6 +64,9 @@ class MADsParser:
             # store name as Last, First        
             self.uris_names[uri] = lastname +", " + firstname
 
+    # returns name with hyphens and commas stripped from string
+    def strip(self, name):
+        return unidecode(name.replace("-", " ").replace(".", ""))
 
     # given a name from OpenRefine, search the dict for the name in the value, return a list of URIs
     
@@ -74,14 +75,23 @@ class MADsParser:
         for k,v in self.uris_names.items():
             # try catch, if name is not in v, try stripping the comma, index the first element (lastname), check 
             # if in v again, if it, multiple matches? 
-            if unidecode(name.replace("-", " ")) in v:
+
+            # for a somewhat scoring algo, if the full name is not a substring of the other, check for last name
+            # will just need to substring until a comma as a delimiter. if last name founds, make a list
+            # assign scores of like .5? 
+
+            if self.strip(name) in self.strip(v) or self.strip(v) in self.strip(name):
                 uris.append({
                     "id": k,
                     "name": name,
-                    "score": 1, 
+                    "score": 1, # do not want to auto match if the score is below 1, openrefine is dumb and has no flag for this
+                                # might need to add a facet for scores less than 1, will be used for manual review
                     "match": True
                 })
                 return uris
+            else:
+                # do last name check here
+                # use split on delimiter comma 
 
         out = open("problemNames.txt", "a")
         name = name + "\n"
