@@ -51,12 +51,6 @@ class MADsParser:
             # need to strip hyphenated names, replace with whitespace
             lastname = lastname.replace("-", " ")
             lastname = unidecode(lastname)
-            firstname = unidecode(firstname)
-
-            # maybe check to see if a lastname is two words?
-            # if it is, strip the first part and add to first name?
-            # consistency issues with hyphenated last names, need to get all edge cases
-
             #print(lastname + ", " + firstname)
             #print(uri)
 
@@ -70,35 +64,41 @@ class MADsParser:
 
     # given a name from OpenRefine, search the dict for the name in the value, return a list of URIs
     
+    # implement user provided limits, will just need to return first n amount of the uri list
+    # enhancement, in elif, if last name is found separately, check for first name separately as well
+    # if first name is found, score is .75, if just last name is found, .5. will make it easier
+    # to manually review possible matches that are not exact
     def search(self, name, query_type='', limit=3):
         uris = []
         for k,v in self.uris_names.items():
-            # try catch, if name is not in v, try stripping the comma, index the first element (lastname), check 
-            # if in v again, if it, multiple matches? 
-
-            # for a somewhat scoring algo, if the full name is not a substring of the other, check for last name
-            # will just need to substring until a comma as a delimiter. if last name founds, make a list
-            # assign scores of like .5? 
-
             if self.strip(name) in self.strip(v) or self.strip(v) in self.strip(name):
                 uris.append({
                     "id": k,
                     "name": name,
-                    "score": 1, # do not want to auto match if the score is below 1, openrefine is dumb and has no flag for this
-                                # might need to add a facet for scores less than 1, will be used for manual review
+                    "score": 1,
                     "match": True
                 })
-                return uris
-            else:
-                # do last name check here
-                # use split on delimiter comma 
+            
+            
+            
+            elif (re.split('\s|, ', self.strip(name)))[0] in (re.split('\s|, ', self.strip(v))):
+                uris.append({
+                    "id": k,
+                    "name": v,
+                    "score": .5,
+                    "match": False
+                })
 
+               
+                # if cleaned first name is in v. .75 score
+                
+        return uris
+        """
         out = open("problemNames.txt", "a")
         name = name + "\n"
         out.write(unidecode(name))
         out.close()
-
-        return 
+        """
 
 if __name__ == "__main__":
     parse = MADsParser()
