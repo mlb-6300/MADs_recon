@@ -68,7 +68,7 @@ class MADsParser:
     # enhancement, in elif, if last name is found separately, check for first name separately as well
     # if first name is found, score is .75, if just last name is found, .5. will make it easier
     # to manually review possible matches that are not exact
-    def search(self, name, query_type='', limit=3):
+    def search(self, name, query_type=''):
         uris = []
         for k,v in self.uris_names.items():
             if self.strip(name) in self.strip(v) or self.strip(v) in self.strip(name):
@@ -79,8 +79,9 @@ class MADsParser:
                     "match": True
                 })
             
-            
-            
+            # if no perfect match, checks for last name prescence. 
+            # if last name is present, .5 score, if last name & first name or MI or MN are, .75 score 
+            # maybe if just first name, .25? 
             elif (re.split('\s|, ', self.strip(name)))[0] in (re.split('\s|, ', self.strip(v))):
                 uris.append({
                     "id": k,
@@ -88,8 +89,10 @@ class MADsParser:
                     "score": .5,
                     "match": False
                 })
-
-               
+                # split after comma, tokenize the rest of the name
+                # check if any of the contets are in v(value)
+                # if the any() call is true, change last entry in URIS to have a score of .75
+                # uris[-1].update({"score":.75})
                 # if cleaned first name is in v. .75 score
                 
         return uris

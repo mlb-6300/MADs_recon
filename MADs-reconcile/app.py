@@ -54,13 +54,19 @@ def reconcile():
             qtype = query.get('type')
             if qtype is None:
                 return jsonpify(metadata)
+            
+            # limits matches to 3 if no limit is provided
             limit = 3
             if 'limit' in query:
                 limit = int(query['limit'])
-            data = parse.search(query['query'], query_type=qtype, limit=limit)
-            #print(query['query'],)
-            results[key] = {"result": data}
-            #print(results[key])
+            
+            # performing search
+            data = parse.search(query['query'], query_type=qtype)
+
+            # sorts the list in descending order of scores
+            data = sorted(data, key=lambda d: d['score'], reverse=True)
+
+            results[key] = {"result": data[:limit]}
         return jsonpify(results)
     return jsonpify(metadata)
 
@@ -68,8 +74,3 @@ if __name__ == "__main__":
     # defaults to localhost port 5000
     # http://127.0.0.1:5000/reconcile/mads
     app.run(debug=True, threaded=True)
-
-# !!!
-# do we need a scoring algorithm? if this is exclusively being used for fsu and thesis committee type stuff
-# we probably will never have more than 3 people with the same exact names. 
-# ask alex

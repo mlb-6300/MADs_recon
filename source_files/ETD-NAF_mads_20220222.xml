@@ -31199,19 +31199,19 @@ http://id.loc.gov/authorities/names/n84074186</mads:note>
                     authority="naf"
                     authorityURI="http://id.loc.gov/authorities/names/"
                     valueURI="http://id.loc.gov/authorities/names/n2003129868">
-            <mads:namePart type="family">Meyer-Bäse</mads:namePart>
+            <mads:namePart type="family">Meyer-Baese</mads:namePart>
             <mads:namePart type="given">Anke</mads:namePart>
          </mads:name>
       </mads:authority>
       <mads:variant type="other">
          <mads:name type="personal">
-            <mads:namePart type="family">Bäse</mads:namePart>
+            <mads:namePart type="family">Baese</mads:namePart>
             <mads:namePart type="given">Anke Meyer-</mads:namePart>
          </mads:name>
       </mads:variant>
       <mads:variant type="other">
          <mads:name type="personal">
-            <mads:namePart type="family">Meyer-Bäese</mads:namePart>
+            <mads:namePart type="family">Meyer-Bäse</mads:namePart>
             <mads:namePart type="given">Anke</mads:namePart>
          </mads:name>
       </mads:variant>
