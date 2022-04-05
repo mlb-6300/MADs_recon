@@ -12,7 +12,7 @@
   - ETD-NAF_mads_20220222.xml
     - Contains committee member names and URIs
   - pdfdata_names_2021Su.dsv
-    - Pipe delimited file containing committee member names, roles, and associated thesis/dissertation PDFs. Was used for         testing purposes
+    - Pipe delimited file containing committee member names, roles, and associated thesis/dissertation PDFs. Was used for testing purposes
 
 ## Requirements
   - Application module requirements are specified in `requirements.txt`.
@@ -30,4 +30,4 @@
      - 7. Select "Start Reconciling..."
 
 ## Notes
-  - This project is based off of source code from [mphilli's](https://github.com/mphilli) [LoC Reconcilation](https://github.com/mphilli/LoC-reconcile) project. Please see [License]()
+  - This project is based off of source code from [mphilli's](https://github.com/mphilli) [LoC Reconcilation](https://github.com/mphilli/LoC-reconcile) project. Please see [License](https://github.com/mlb-6300/mads_recon/blob/main/LICENSE)
