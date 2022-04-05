@@ -20,8 +20,8 @@
 
 ## Usage
   - To run reconciliation Flask service run either `flask run` or `python app.py` while in `MADs-reconcile` directory. 
-  - With OpenRefine running and a project opened, run the following steps: 
-     1. Select a column containing indirect names
+  - With OpenRefine running and a project opened, run the following steps:
+  - 1. Select a column containing indirect names
      2. Click reconcile
      3. Click start reconciling (Proceed to Step 5 if service is already added)
      4. Select "Add Standard Service" and supply the following URL `http://127.0.0.1:5000/reconcile/mads`. 
