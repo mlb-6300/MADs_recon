@@ -63,14 +63,11 @@ class MADsParser:
         return unidecode(name.replace("-", " ").replace(".", ""))
 
     # given a name from OpenRefine, search the dict for the name in the value, return a list of URIs
-    
-    # implement user provided limits, will just need to return first n amount of the uri list
-    # enhancement, in elif, if last name is found separately, check for first name separately as well
-    # if first name is found, score is .75, if just last name is found, .5. will make it easier
-    # to manually review possible matches that are not exact
     def search(self, name, query_type=''):
         uris = []
+
         for k,v in self.uris_names.items():
+            # checks for perfect name match, works for almost all names
             if self.strip(name) in self.strip(v) or self.strip(v) in self.strip(name):
                 uris.append({
                     "id": k,
@@ -79,9 +76,7 @@ class MADsParser:
                     "match": True
                 })
             
-            # if no perfect match, checks for last name prescence. 
-            # if last name is present, .5 score, if last name & first name or MI or MN are, .75 score 
-            # maybe if just first name, .25? 
+            # if no perfect match, checks for last name prescence. Just last name match is a score of .5
             elif (re.split('\s|, ', self.strip(name)))[0] in (re.split('\s|, ', self.strip(v))):
                 uris.append({
                     "id": k,
@@ -89,11 +84,20 @@ class MADsParser:
                     "score": .5,
                     "match": False
                 })
+            
                 # split after comma, tokenize the rest of the name
-                # check if any of the contets are in v(value)
-                # if the any() call is true, change last entry in URIS to have a score of .75
-                # uris[-1].update({"score":.75})
-                # if cleaned first name is in v. .75 score
+                tokens = ((self.strip(name))).split(',', 1)[-1].lstrip()
+                tokens = tokens.split()
+                # want to exclude middle initials
+                for string in tokens[:]:
+                    if len(string) == 1:
+                        tokens.remove(string)
+
+                # checking for presence of first name or full middle name, increases match score to .75
+                if any(ext in v for ext in tokens):
+                    uris[-1].update({"score":.75})
+
+                # maybe if just first name, .25? 
                 
         return uris
         """
