@@ -17,6 +17,7 @@
 ## Requirements
   - Application module requirements are specified in `requirements.txt`.
   - Run the following command to install all required packages: `pythom -m pip install -r requirements.txt`
+  - An additional requirements is that the XML file to be parsed for names and URIs must be in the same format as the ETD-NAF... file, as the parser is looking for specific tags in the file. 
 
 ## Usage
   - To run reconciliation Flask service run either `flask run` or `python app.py` while in `MADs-reconcile` directory. 
@@ -28,6 +29,8 @@
       5. Select "MADs Reconciliation Service"
       6. Supply max # of candidates to return (default is 3)
       7. Select "Start Reconciling..."
+
+  - After the reconciliation service finishes, perfect matches with a score of 1.0 will be automatched to their correponding cell. Matches with a score of .75 are not exact matches, but pretty close, more than likely matching on the last name and the first name. Matches with a score of .5 only matched on the last name, so confidence is pretty low that these are the correct matches. Matches with a non-perfect score must be manually reviewed to select the best match. 
 
 ## Notes
   - This project is based off of source code from [mphilli's](https://github.com/mphilli) [LoC Reconcilation](https://github.com/mphilli/LoC-reconcile) project. Please see [License](https://github.com/mlb-6300/mads_recon/blob/main/LICENSE)
