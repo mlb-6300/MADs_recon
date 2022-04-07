@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify, json
 from mads_parse import MADsParser
+import sys
 
 app = Flask(__name__)
 
@@ -28,6 +29,9 @@ metadata = {
         "url": "{{id}}"
     },
 }
+xml_doc = ""
+if len(sys.argv) == 2:
+    xml_doc = sys.argv[1]
 
 def jsonpify(obj):
     try:
@@ -42,7 +46,11 @@ def jsonpify(obj):
 # in custom search function, we return a list of all the uris
 @app.route("/reconcile/mads", methods=["POST", "GET"])
 def reconcile():
-    parse = MADsParser()
+    if (xml_doc == ""):
+        parse = MADsParser()
+    else:
+        parse = MADsParser(xml_doc)
+
     queries = request.form.get('queries')
     # if content in queries (i.e. names), deserialize the content
     if queries: 

@@ -7,10 +7,11 @@ class MADsParser:
     collections.Callable = collections.abc.Callable
     uris_names = {}
     
-    # default constructor initializes the iternal dict of uri/name pairs. 
-    def __init__(self):
+    # constructor initializes the iternal dict of uri/name pairs. Has a default parameter of 
+    # the following XML file. User can pass in any xml file through command line instead
+    def __init__(self, xml_file="../source_files/ETD-NAF_mads_20220222.xml"):
         # inits BeautifulSoup parse object with the etd-naf_mads source file
-        with open("../source_files/ETD-NAF_mads_20220222.xml", "rb") as fp:
+        with open(xml_file, "rb") as fp:
             soup = BeautifulSoup(fp, "xml")
 
         # lookup will be done by value, return multiple keys if value occurs more than once
