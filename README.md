@@ -20,7 +20,7 @@
   - An additional requirements is that the XML file to be parsed for names and URIs must be in the same format as the ETD-NAF... file, as the parser is looking for specific tags in the file. 
 
 ## Usage
-  - To run reconciliation Flask service run either `flask run` or `python app.py` while in `MADs-reconcile` directory. If passing in XML document as command line argument, run with `python app.py <xml file>`. Make sure XML document is in the same directory as the application.
+  - To run reconciliation Flask service run `python app.py` while in `MADs-reconcile` directory. If passing in XML document as command line argument, run with `python app.py <xml file>`. Make sure XML document is in the same directory as the application. Additonally, do not run with `flask run`, as it messes up command line arguments.
   - With OpenRefine running and a project opened, run the following steps:
       1. Select a column containing indirect names
       2. Click reconcile
