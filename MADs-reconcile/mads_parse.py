@@ -97,6 +97,8 @@ class MADsParser:
                 # checking for presence of first name or full middle name, increases match score to .75
                 if any(ext in v for ext in tokens):
                     uris[-1].update({"score":.75})
+                    # if you want scores of .75 to auto match, uncomment this out
+                    # uris[-1].update({"match":True})
 
                 # maybe if just first name, .25? 
                 

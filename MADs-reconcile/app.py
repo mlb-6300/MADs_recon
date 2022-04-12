@@ -7,14 +7,8 @@ app = Flask(__name__)
 refine_to_lc = list([
     {
         "id": "Names",
-        "name": "Library of Congress Name Authority File",
+        "name": "MADs Name Authority File",
         "index": "/authorities/names"
-    },
-    {
-        "id": "Subjects",
-        "name": "Library of Congress Subject Headings",
-        "index": "authorities/subjects"
-
     }
 ])
 
