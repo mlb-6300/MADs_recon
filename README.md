@@ -33,4 +33,5 @@
   - After the reconciliation service finishes, perfect matches with a score of 1.0 will be automatched to their correponding cell. Matches with a score of .75 are not exact matches, but pretty close, more than likely matching on the last name and the first name. Matches with a score of .5 only matched on the last name, so confidence is pretty low that these are the correct matches. Matches with a non-perfect score must be manually reviewed to select the best match. 
 
 ## Notes
-  - This project is based off of source code from [mphilli's](https://github.com/mphilli) [LoC Reconcilation](https://github.com/mphilli/LoC-reconcile) project. Please see [License](https://github.com/mlb-6300/mads_recon/blob/main/LICENSE)
+  - This project is based off of source code from [mphilli's](https://github.com/mphilli) [LoC Reconcilation](https://github.com/mphilli/LoC-reconcile) project. Please see [License](https://github.com/mlb-6300/mads_recon/blob/main/LICENSE).
+  - Developed for Florida State University's Library Technical Services. 
