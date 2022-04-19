@@ -19,9 +19,12 @@ class MADsParser:
         
         # iterating through the name tags 
         for name in soup.find_all("mads:name"):
+            #l_var = soup.find("mads:variant", type="family")
+            #f_var = soup.find("mads:variant", type="given")
+
             # ignores duplicate names! such as preferred names
-            if "variant" in name:
-                continue
+            """if "variant" in name:
+                continue"""
             # ignores related names as well
             if "related" in name:
                 continue
@@ -36,6 +39,13 @@ class MADsParser:
             # grabbing first and last name
             l = name.find('mads:namePart', type="family")
             f = name.find('mads:namePart', type="given")
+
+            # maybe store value as a tuple? tuple1 will be the first name
+            # second tuple will be the related/variant names
+
+            # then when checking in search() compare against both? gonna have duplicate code more than likely
+
+            # if i run find on the tags again, will it grab the same stuff? or does it move on?
             
             # if empty family field (more so the field doesn't exist), continues in the loop 
             if l is None:
@@ -45,22 +55,41 @@ class MADsParser:
             lastname = l.get_text()
             firstname = f.get_text()
             
+            #l2 = name.find('mads:namePart', type="family")
+            #f2 = name.find('mads:namePart', type="given")
+
+            #lastname2 = l2.get_text()
+            #firstname2 = f2.get_text()
+    
             # for people with parans, ex. Susan C. (Susan Carol), gets rid of that, and strips extra whitespace
             firstname = re.sub(r'\([^)]*\)', '', firstname)
             firstname = firstname.rstrip()
 
-            # need to strip hyphenated names, replace with whitespace
+            #firstname2 = re.sub(r'\([^)]*\)', '', firstname2)
+            #firstname2 = firstname2.rstrip()
+
+
+            # need to my_strip hyphenated names, replace with whitespace
             lastname = lastname.replace("-", " ")
             lastname = unidecode(lastname)
+
+            #lastname2 = lastname2.replace("-", " ")
+            #lastname2 = unidecode(lastname2)
             #print(lastname + ", " + firstname)
             #print(uri)
 
             # adding pair to dict, uri as key and name as value
             # store name as Last, First        
-            self.uris_names[uri] = lastname +", " + firstname
+            self.uris_names[uri] = (lastname +", " + firstname)
 
+       # self.uprint()
+
+    def uprint(self):
+        for k,v in self.uris_names.items():
+            print(v)
+        
     # returns name with hyphens and commas stripped from string
-    def strip(self, name):
+    def my_strip(self, name):
         return unidecode(name.replace("-", " ").replace(".", ""))
 
     # given a name from OpenRefine, search the dict for the name in the value, return a list of URIs
@@ -68,17 +97,27 @@ class MADsParser:
         uris = []
 
         for k,v in self.uris_names.items():
-            # checks for perfect name match, works for almost all names
-            if self.strip(name) in self.strip(v) or self.strip(v) in self.strip(name):
-                uris.append({
-                    "id": k,
-                    "name": name,
-                    "score": 1,
-                    "match": True
-                })
+
+            if self.my_strip(name) in self.my_strip(v) or self.my_strip(v) in self.my_strip(name):
+                # after checking if name is in v or v is in name, perform anyother check for if v (from mads)
+                # is in name, if it ISN'T non-perfect score because non-perfect match
+                if self.my_strip(v) in self.my_strip(name):
+                    uris.append({
+                        "id": k,
+                        "name": name,
+                        "score": 1,
+                        "match": True
+                    })
+                else:
+                    uris.append({
+                        "id": k,
+                        "name": name,
+                        "score": .80,
+                        "match": False
+                    })
             
             # if no perfect match, checks for last name prescence. Just last name match is a score of .5
-            elif (re.split('\s|, ', self.strip(name)))[0] in (re.split('\s|, ', self.strip(v))):
+            elif (re.split('\s|, ', self.my_strip(name)))[0] in (re.split('\s|, ', self.my_strip(v))):
                 uris.append({
                     "id": k,
                     "name": v,
@@ -87,7 +126,7 @@ class MADsParser:
                 })
             
                 # split after comma, tokenize the rest of the name
-                tokens = ((self.strip(name))).split(',', 1)[-1].lstrip()
+                tokens = ((self.my_strip(name))).split(',', 1)[-1].lstrip()
                 tokens = tokens.split()
                 # want to exclude middle initials
                 for string in tokens[:]:
@@ -101,7 +140,19 @@ class MADsParser:
                     # uris[-1].update({"match":True})
 
                 # maybe if just first name, .25? 
-                
+            
+        # if there is only one match in the list, will automatch 
+        if (len(uris) == 1):
+            uris[-1].update({"match":True})
+        
+        # if there's only two matches in the list, will automatch on the highest score
+        if (len(uris) == 2):
+            if (uris[0].get("score") > uris[1].get("score")):
+                uris[0].update({"match":True})
+            elif (uris[0].get("score") < uris[1].get("score")):
+                uris[1].update({"match":True})
+
+
         return uris
         """
         out = open("problemNames.txt", "a")
