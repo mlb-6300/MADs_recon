@@ -16,8 +16,41 @@ class MADsParser:
 
         # lookup will be done by value, return multiple keys if value occurs more than once
         # will be left to choose in openrefine
-        
+        last2 = ""
+        first2 = ""
+        variants = []
         # iterating through the name tags 
+        try:
+            for var in soup.find_all("mads:variant"):
+
+                l2 = var.find('mads:namePart', type="family")
+                f2 = var.find('mads:namePart', type="given")
+                if (l2 == None or f2 == None):
+                    variants.append("")
+                    continue
+                last2 = l2.get_text()
+                first2 = f2.get_text()
+
+                # do name manipulation here
+                # append to variants list
+
+                first2 = re.sub(r'\([^)]*\)', '', first2)
+                first2 = first2.rstrip()
+
+                last2 = last2.replace("-", " ")
+                last2 = unidecode(last2)
+
+                variants.append(last2 + ", " + first2)
+        except:
+            variants.append()
+            
+        print(len(variants))
+
+        counter = 0
+        # can honestly maybe just contain this in the variant for loop? 
+        # access to local first2 and last2. can check if empty, if not empty
+        # tuple it up and store in hash mak
+
         for name in soup.find_all("mads:name"):
             #l_var = soup.find("mads:variant", type="family")
             #f_var = soup.find("mads:variant", type="given")
@@ -72,6 +105,7 @@ class MADsParser:
             # need to my_strip hyphenated names, replace with whitespace
             lastname = lastname.replace("-", " ")
             lastname = unidecode(lastname)
+            firstname = unidecode(firstname)
 
             #lastname2 = lastname2.replace("-", " ")
             #lastname2 = unidecode(lastname2)
@@ -80,9 +114,15 @@ class MADsParser:
 
             # adding pair to dict, uri as key and name as value
             # store name as Last, First        
-            self.uris_names[uri] = (lastname +", " + firstname)
+            
+            # not lists, tuple two names together
+            # if lastname and firstname are empty, just empty strings
 
-       # self.uprint()
+            self.uris_names[uri] = ((lastname+ ", " + firstname), variants[counter])
+            
+
+        #print(variants)
+        #self.uprint()
 
     def uprint(self):
         for k,v in self.uris_names.items():
