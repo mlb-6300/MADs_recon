@@ -14,55 +14,35 @@ class MADsParser:
         with open(xml_file, "rb") as fp:
             soup = BeautifulSoup(fp, "xml")
 
-        # lookup will be done by value, return multiple keys if value occurs more than once
-        # will be left to choose in openrefine
-        last2 = ""
-        first2 = ""
-        variants = []
-        # iterating through the name tags 
-        try:
-            for var in soup.find_all("mads:variant"):
 
-                l2 = var.find('mads:namePart', type="family")
-                f2 = var.find('mads:namePart', type="given")
-                if (l2 == None or f2 == None):
-                    variants.append("")
-                    continue
-                last2 = l2.get_text()
-                first2 = f2.get_text()
-
-                # do name manipulation here
-                # append to variants list
-
-                first2 = re.sub(r'\([^)]*\)', '', first2)
-                first2 = first2.rstrip()
-
-                last2 = last2.replace("-", " ")
-                last2 = unidecode(last2)
-
-                variants.append(last2 + ", " + first2)
-        except:
-            variants.append()
-            
-        print(len(variants))
-
-        counter = 0
-        # can honestly maybe just contain this in the variant for loop? 
-        # access to local first2 and last2. can check if empty, if not empty
-        # tuple it up and store in hash mak
-
-        for name in soup.find_all("mads:name"):
+        for name in soup.find_all("mads:mads"):
             #l_var = soup.find("mads:variant", type="family")
             #f_var = soup.find("mads:variant", type="given")
 
-            # ignores duplicate names! such as preferred names
-            """if "variant" in name:
-                continue"""
-            # ignores related names as well
-            if "related" in name:
+            # use this for things
+            uri = (name.find('mads:authority')).find('mads:name').get("valueURI")
+            if uri is None:
                 continue
 
-            # grabbing the uri
+            l = (name.find('mads:authority').find('mads:name', type="personal")).find('mads:namePart', type='family').get_text()
+            try:
+                l2 = (name.find('mads:variant').find('mads:name', type="personal")).find('mads:namePart', type='family').get_text()
+            except:
+                l2 = ""
+            
+            f = (name.find('mads:authority').find('mads:name', type="personal")).find('mads:namePart', type="given").get_text()
+
+            try:
+                f2 = (name.find('mads:variant').find('mads:name', type="personal")).find('mads:namePart', type='given').get_text()
+            except:
+                f2 = ""
+            
+            # clean up names here
+            f = re.sub(r'\([^)]*\)', '', f)
+            f = f.rstrip()
+
+            
+            """
             uri = name.get("valueURI")
 
             # if someone does not have a uri, they simply should not be in the dict (imo). when we go to reconcile, no uri will pop up, as it should be
@@ -119,6 +99,7 @@ class MADsParser:
             # if lastname and firstname are empty, just empty strings
 
             self.uris_names[uri] = ((lastname+ ", " + firstname), variants[counter])
+            """
             
 
         #print(variants)
@@ -137,7 +118,8 @@ class MADsParser:
         uris = []
 
         for k,v in self.uris_names.items():
-
+            # v will now be a tuple here. check if the second (v[1]) is equal to "", if not, there's a variant
+            # should search make comparisons to both. not sure how yet
             if self.my_strip(name) in self.my_strip(v) or self.my_strip(v) in self.my_strip(name):
                 # after checking if name is in v or v is in name, perform anyother check for if v (from mads)
                 # is in name, if it ISN'T non-perfect score because non-perfect match
