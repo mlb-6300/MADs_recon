@@ -30,7 +30,9 @@
       6. Supply max # of candidates to return (default is 3)
       7. Select "Start Reconciling..."
 
-  - After the reconciliation service finishes, perfect matches with a score of 1.0 will be automatched to their correponding cell. Matches with a score of .75 are not exact matches, but pretty close, more than likely matching on the last name and the first name. Matches with a score of .5 only matched on the last name, so confidence is pretty low that these are the correct matches. Matches with a non-perfect score must be manually reviewed to select the best match. 
+  - After the reconciliation service finishes, perfect matches with a score of 1.0 will be automatched to their correponding cell. Matches with a score of .8 and a score of .75 are not exact matches, but pretty close, likely matching on the last name and the first name. Matches with a score of .5 only matched on the last name, so confidence is pretty low that these are the correct matches. Matches with a non-perfect score must be manually reviewed to select the best match.
+  - If only one match is found for a name, the application will automatch it. Comment this out if desired.
+  - Additionally, if two matches are found for a name, the application will automatch on the one with a higher score. Again, comment this out if desired.
 
 ## Notes
   - This project is based off of source code from [mphilli's](https://github.com/mphilli) [LoC Reconcilation](https://github.com/mphilli/LoC-reconcile) project. Please see [License](https://github.com/mlb-6300/mads_recon/blob/main/LICENSE).
